@@ -1,0 +1,68 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @company.name %>
+</p>
+
+<%= link_to 'Edit', edit_company_path(@company) %> |
+<%= link_to 'Back', companies_path %>
+
+<%= form_with(model: [ @company, Employee.new], local: true) do |form| %>
+  <%= form.hidden_field :company_id, value: @company.id %>
+
+  <% if @company.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(company.errors.count, "error") %> prohibited this company from being saved:</h2>
+      <ul>
+      <% company.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :first_name %>
+    <%= form.text_field :first_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :last_name %>
+    <%= form.text_field :last_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :email %>
+    <%= form.text_field :email %>
+  </div>
+
+  <div class="field">
+    <%= form.label :area_id %>
+    <%= form.select :area_id, options_from_collection_for_select(Area.all, :id, :name), prompt:"Seleccione el area" %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
+
+<div class="table-responsive">
+  <table class="table">
+    <tr>
+      <td>Nombres:</td>
+      <td>Apellidos:</td>
+      <td>Email:</td>
+      <td>Area:</td>
+    </tr>
+    <% @company.employees.each do |employee| %>
+      <tr>
+        <td><%= employee.first_name %></td>
+        <td><%= employee.last_name %></td>
+        <td><%= employee.email %></td>
+        <td><%= employee.area_id %></td>
+        <td><%= link_to 'Eliminar', company_employee_path(@company, employee), method: :delete %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>
